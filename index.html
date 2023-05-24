@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hot Air Balloon Pre-Flight Checklist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .checklist-container {
+            margin-top: 20px;
+        }
+        .checklist-item {
+            margin-bottom: 10px;
+        }
+        .checklist-item input {
+            margin-right: 10px;
+        }
+        .additional-info {
+            margin-left: 25px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hot Air Balloon Pre-Flight Checklist</h1>
+    <div class="checklist-container" id="checklist-container">
+        <!-- Checklist items will be inserted here -->
+    </div>
+
+    <script>
+        var checklistItems = [
+            { 
+                step: 'Step 1: Weather Briefing',
+                additionalInfo: [
+                    {
+                        link: 'https://ryancarlton.com/',
+                        description: ''
+                    }, 
+                    {
+                        link: 'www.1800wxbrief.com',
+                        description: ' -> Plan & Brief -> Select Balloon -> Update - Departure & Destination'
+                    }
+                ]
+            },
+            { 
+                step: 'Step 2: Check the basket and burner',
+                additionalInfo: ['Note 1', 'Note 2']
+            },
+            { 
+                step: 'Step 3: Check fuel levels',
+                additionalInfo: []
+            },
+            // Add as many steps as needed...
+        ];
+
+        var checklistContainer = document.getElementById('checklist-container');
+
+        for (var i = 0; i < checklistItems.length; i++) {
+            createChecklistItem(i);
+        }
+
+        function createChecklistItem(i) {
+            var item = document.createElement('div');
+            item.className = 'checklist-item';
+
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+
+            var label = document.createElement('label');
+            label.textContent = checklistItems[i].step;
+
+            item.appendChild(checkbox);
+            item.appendChild(label);
+
+            var additionalInfoList = document.createElement('div');
+            additionalInfoList.className = 'additional-info';
+
+            var subCheckboxes = [];  // Store all sub-checkboxes
+
+            for (var j = 0; j < checklistItems[i].additionalInfo.length; j++) {
+                var additionalInfoItem = document.createElement('div');
+                var additionalCheckbox = document.createElement('input');
+                additionalCheckbox.type = 'checkbox';
+
+                subCheckboxes.push(additionalCheckbox);  // Push this checkbox to the array
+
+                // When a sub-checkbox is clicked, check if all are checked and update the parent checkbox
+                additionalCheckbox.addEventListener('change', function() {
+                    var allChecked = subCheckboxes.every(function(cb) {
+                        return cb.checked;
+                    });
+                    checkbox.checked = allChecked;
+                });
+
+                // Check if additionalInfo item is a URL
+                var additionalInfo = checklistItems[i].additionalInfo[j];
+                if (typeof additionalInfo === 'object') {
+                    var link = document.createElement('a');
+                    link.href = additionalInfo.link.startsWith('www.') 
+                                ? 'https://' + additionalInfo.link 
+                                : additionalInfo.link;
+                    link.textContent = additionalInfo.link;
+                    link.target = '_blank';  // To open link in a new tab
+                    additionalInfoItem.appendChild(additionalCheckbox);
+                    additionalInfoItem.appendChild(link);
+                    var description = document.createElement('span');
+                    description.textContent = additionalInfo.description;
+                    additionalInfoItem.appendChild(description);
+                } else {
+                    var additionalLabel = document.createElement('label');
+                    additionalLabel.textContent = additionalInfo;
+                    additionalInfoItem.appendChild(additionalCheckbox);
+                    additionalInfoItem.appendChild(additionalLabel);
+                }
+                
+                additionalInfoList.appendChild(additionalInfoItem);
+            }
+
+            item.appendChild(additionalInfoList);
+            checklistContainer.appendChild(item);
+        }
+    </script>
+</body>
+</html>
+
+
+
+
