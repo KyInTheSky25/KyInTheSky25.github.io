@@ -10,13 +10,36 @@
             margin-top: 20px;
         }
         .checklist-item {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         .checklist-item input {
             margin-right: 10px;
+            height: 40px;
+            width: 40px;
         }
         .additional-info {
             margin-left: 25px;
+        }
+        label {
+            font-size: 25px;
+        }
+        a {
+            font-size: 25px;
+        }
+        @media only screen and (max-width: 600px) {
+            body {
+                font-size: 25px;
+            }
+            .checklist-item input {
+                height: 60px;
+                width: 60px;
+            }
+            label {
+                font-size: 35px;
+            }
+            a {
+                font-size: 35px;
+            }
         }
     </style>
 </head>
@@ -80,6 +103,8 @@
                 var additionalInfoItem = document.createElement('div');
                 var additionalCheckbox = document.createElement('input');
                 additionalCheckbox.type = 'checkbox';
+                additionalCheckbox.style.height = '40px';
+                additionalCheckbox.style.width = '40px';
 
                 subCheckboxes.push(additionalCheckbox);  // Push this checkbox to the array
 
@@ -93,11 +118,10 @@
 
                 // Check if additionalInfo item is a URL
                 var additionalInfo = checklistItems[i].additionalInfo[j];
+
                 if (typeof additionalInfo === 'object') {
                     var link = document.createElement('a');
-                    link.href = additionalInfo.link.startsWith('www.') 
-                                ? 'https://' + additionalInfo.link 
-                                : additionalInfo.link;
+                    link.href = additionalInfo.link.startsWith('www.') ? 'https://' + additionalInfo.link : additionalInfo.link;
                     link.textContent = additionalInfo.link;
                     link.target = '_blank';  // To open link in a new tab
                     additionalInfoItem.appendChild(additionalCheckbox);
@@ -114,13 +138,13 @@
                 
                 additionalInfoList.appendChild(additionalInfoItem);
             }
-
             item.appendChild(additionalInfoList);
             checklistContainer.appendChild(item);
         }
     </script>
 </body>
 </html>
+
 
 
 
