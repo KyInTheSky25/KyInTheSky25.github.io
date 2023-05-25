@@ -49,6 +49,8 @@
         <!-- Checklist items will be inserted here -->
     </div>
 
+    <button id="reset-button">Reset</button>
+
     <script>
         var checklistItems = [
             { 
@@ -76,10 +78,20 @@
         ];
 
         var checklistContainer = document.getElementById('checklist-container');
+        var resetButton = document.getElementById('reset-button');
+
+        // Load saved checkbox states from localStorage after the page has fully loaded
+        window.addEventListener('load', function() {
+            loadCheckboxes();
+        });
 
         for (var i = 0; i < checklistItems.length; i++) {
             createChecklistItem(i);
         }
+
+        resetButton.addEventListener('click', function() {
+            resetCheckboxes();
+        });
 
         function createChecklistItem(i) {
             var item = document.createElement('div');
@@ -114,9 +126,10 @@
                         return cb.checked;
                     });
                     checkbox.checked = allChecked;
+                    saveCheckboxes();
                 });
 
-                // Check if additionalInfo item is a URL
+                // Check if additionalInfo item is an object (link with description)
                 var additionalInfo = checklistItems[i].additionalInfo[j];
 
                 if (typeof additionalInfo === 'object') {
@@ -139,7 +152,44 @@
                 additionalInfoList.appendChild(additionalInfoItem);
             }
             item.appendChild(additionalInfoList);
+
             checklistContainer.appendChild(item);
+        }
+
+        function saveCheckboxes() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            var checkboxStates = {};
+
+            checkboxes.forEach(function(checkbox) {
+                checkboxStates[checkbox.id] = checkbox.checked;
+            });
+
+            localStorage.setItem('checkboxStates', JSON.stringify(checkboxStates));
+        }
+
+        function loadCheckboxes() {
+            var checkboxStates = JSON.parse(localStorage.getItem('checkboxStates'));
+
+            if (checkboxStates) {
+                for (var i = 0; i < Object.keys(checkboxStates).length; i++) {
+                    var checkboxId = Object.keys(checkboxStates)[i];
+                    var checkbox = document.getElementById(checkboxId);
+
+                    if (checkbox) {
+                        checkbox.checked = checkboxStates[checkboxId];
+                    }
+                }
+            }
+        }
+
+        function resetCheckboxes() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+
+            localStorage.removeItem('checkboxStates');
         }
     </script>
 </body>
