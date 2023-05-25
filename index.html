@@ -5,6 +5,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            overflow-y: scroll; /* Enable vertical scrolling for the entire page */
         }
         .checklist-container {
             margin-top: 20px;
@@ -26,6 +27,9 @@
         a {
             font-size: 25px;
         }
+        span {
+            font-size: 25px;
+        }
         @media only screen and (max-width: 600px) {
             body {
                 font-size: 25px;
@@ -34,17 +38,14 @@
                 height: 60px;
                 width: 60px;
             }
-            label {
-                font-size: 35px;
-            }
-            a {
+            label, a, span {
                 font-size: 35px;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Hot Air Balloon Pre-Flight Checklist</h1>
+    <h1>Operation Pass Scott</h1>
     <div class="checklist-container" id="checklist-container">
         <!-- Checklist items will be inserted here -->
     </div>
@@ -57,23 +58,47 @@
                 step: 'Step 1: Weather Briefing',
                 additionalInfo: [
                     {
+                        link: 'www.1800wxbrief.com',
+                        description: ' -> Plan & Brief -> Select Balloon -> Update - Departure & Destination'
+                    },
+                    {
                         link: 'https://ryancarlton.com/',
                         description: ''
                     }, 
                     {
-                        link: 'www.1800wxbrief.com',
-                        description: ' -> Plan & Brief -> Select Balloon -> Update - Departure & Destination'
+                        link: 'https://www.weather.gov/',
+                        description: ''
+                    },
+                    {
+                        link: 'https://www.windy.com/',
+                        description: ''
                     }
                 ]
             },
             { 
-                step: 'Step 2: Check the basket and burner',
-                additionalInfo: ['Note 1', 'Note 2']
+                step: 'Step 2: Flight Planning',
+                additionalInfo: ['Use hot air to plane take off/landing', 'Calculate maximum allowable Gross Weight']
             },
             { 
-                step: 'Step 3: Check fuel levels',
-                additionalInfo: []
+                step: 'Step 3: Documents',
+                additionalInfo: ['Airworthiness Certificate', 'Registration', 'Operating limitations']
             },
+            { 
+                step: 'Step 4: Fuel Check',
+                additionalInfo: ['Ensure the tanks have fuel and test burners checking for leaks', 'Emergency Test']
+            },
+            { 
+                step: 'Step 5: Crew Briefing',
+                additionalInfo: ['Brief the whole crew on their steps and where to be']
+            },
+            { 
+                step: 'Step 6: Inflation',
+                additionalInfo: ['Lay down and begin to attach envelope to basket', 'Tie off the basket to anchor point', 'Start Fans', 'Watch Ropes','Secure Top', 'Inflate Balloon']
+            },
+            { 
+                step: 'Step 7: Pre-launch',
+                additionalInfo: ['Check gauges', 'Check Altimeter', 'Radio Check', 'Final Crew Instructions']
+            }
             // Add as many steps as needed...
         ];
 
@@ -81,7 +106,7 @@
         var resetButton = document.getElementById('reset-button');
 
         // Load saved checkbox states from localStorage after the page has fully loaded
-        window.addEventListener('load', function() {
+        window.addEventListener('DOMContentLoaded', function() {
             loadCheckboxes();
         });
 
@@ -99,6 +124,7 @@
 
             var checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
+            checkbox.id = 'checkbox-' + i; // Assign a unique id to each checkbox
 
             var label = document.createElement('label');
             label.textContent = checklistItems[i].step;
@@ -115,8 +141,7 @@
                 var additionalInfoItem = document.createElement('div');
                 var additionalCheckbox = document.createElement('input');
                 additionalCheckbox.type = 'checkbox';
-                additionalCheckbox.style.height = '40px';
-                additionalCheckbox.style.width = '40px';
+                additionalCheckbox.id = 'checkbox-' + i + '-' + j; // Assign a unique id to each sub-checkbox
 
                 subCheckboxes.push(additionalCheckbox);  // Push this checkbox to the array
 
